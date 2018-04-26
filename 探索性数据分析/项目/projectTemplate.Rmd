@@ -33,41 +33,41 @@ summary(wineQualityReds) # 查看数据的分布情况
 这个数据集包含了1599条数据, 总共是13个属性变量.
 其中所有的属性变量都是数字类型, quality是整数类型, 但是数据是离散还是连续的未曾得知.
 接下来观察单一变量的分布情况.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds <- wineQualityReds %>% select(-1)
 ```
 
 第一列的x序号去掉.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 summary(wineQualityReds$fixed.acidity)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(fixed.acidity),  data = wineQualityReds)+
   geom_histogram()
 ```
 
 可以看的出来, 酸度是一个从4到16范围的变量, 大多数红酒集中在6到8之间.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 summary(wineQualityReds$volatile.acidity)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$volatile.acidity, binwidth = 0.01)+
   scale_x_continuous(breaks = seq(0.12, 1.58, 0.1))
 ```
 
 挥发物的酸度集中在0.4到0.8之间, 和固定酸度分布形状比较相似, 两个图都有一定的长尾效应.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 # 改变长尾效应
 qplot(wineQualityReds$volatile.acidity)+
   scale_x_log10() 
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 summary(wineQualityReds$fixed.acidity)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$fixed.acidity)+
   scale_x_log10()
 ```
@@ -76,89 +76,88 @@ qplot(wineQualityReds$fixed.acidity)+
 转换坐标后两个图明显看出酸度的分布比较符合正态分布.
 酸度是一个连续的变量.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$citric.acid)+
   scale_x_sqrt()
 ```
 
 柠檬酸的分布图很明显的在0处存在很多数据, 也就是说, 有的红酒里面是不添加柠檬酸的.
 除了柠檬酸为0的数据, 剩余的数据基本符合一个正太分布.也就是说, 柠檬酸这个东西可加可不加, 制作酒的人的方法也存在很大的差异.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 summary(wineQualityReds$citric.acid)
 ```
 
 不添加柠檬酸的数据有132个, 大致占据8%的总数据.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$residual.sugar)+
   scale_x_log10()
 ```
 
 糖分的用量大概在3到5之间.数据形状也比较正常.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 summary(wineQualityReds$chlorides)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$chlorides)+
   scale_x_log10()
 ```
 
 氯化物的使用量, 最高的是最低的60倍.使用log来改变长尾效应.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 library(GGally)
 wineQualityReds <-wineQualityReds %>% mutate(quality = as.character(quality))
 ```
 
 把质量数据从数字改为字符标签, 以便于后面的分类.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$free.sulfur.dioxide)+
   scale_x_log10()
 wineQualityReds$free.sulfur.dioxide %>% summary
 ```
 
 游离二氧化硫的添加量也有长尾效应, 总的范围从1到72, 转化为log后, 可以明显观察到两个突出的山峰, 以及一些位置的缺失值.加不加游离二氧化硫是不是红酒的一个品种
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$total.sulfur.dioxide)+
   scale_x_log10()
 wineQualityReds$total.sulfur.dioxide %>% summary
 ```
 
 总二氧化硫含量大致从10到100不等, 也有长尾效应.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 summary(wineQualityReds$density)
 ```
 
-```{r echo=FALSE}
-qplot(wineQualityReds$density, binwidth = 0.0002)+
-  scale_x_continuous(limits = c(0.9901, 1.0037), breaks = seq(0.9901, 1.0037, 0.0002))
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+qplot(wineQualityReds$density, binwidth = 0.0002)
 ```
 
 密度的分布非常符合正态分布, 但是数据之间的区别不大, 千分之一的差距.这个会对红酒质量产生很大的影响吗?
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$pH)
 ```
 
 红酒的PH值的分布应该和上面的三个酸含量的属性息息相关,红酒偏酸性, 是不是越酸越好?这些属性中, 有哪些是比较贵的, 哪些比较便宜?
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$sulphates)+
   scale_x_log10()
 ```
 
 硫酸盐的含量直方图.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 summary(wineQualityReds$alcohol)
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$alcohol, binwidth = 0.5)+
   scale_x_continuous(breaks = seq(8, 15, 0.5), limits = c(8, 15))
 ```
 
 酒精度数, 这个应该是我们最熟悉的指标了, 明显红酒的度数集中在低度酒的行列内.长尾效应, 对于9.5左右的酒精度有强烈偏好.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 table(wineQualityReds$quality)
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 qplot(wineQualityReds$quality)
 ```
 
@@ -166,7 +165,7 @@ qplot(wineQualityReds$quality)
 
 # 单变量分析
 ### 数据的结构介绍
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 str(wineQualityReds)
 ```
 
@@ -203,7 +202,7 @@ str(wineQualityReds)
 我觉得口感应该和酸甜的比例相关,而不单单是酸还是甜. 酸性和酒精的比例, 以及挥发气体的含量.
 
 ### 创建新属性
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds<-wineQualityReds %>% mutate(ratio.acid.sugar = fixed.acidity/ residual.sugar,
                            ratio.acid.alcohol = fixed.acidity/alcohol,
                            ratio.sugar.alcohol = residual.sugar/alcohol)
@@ -218,8 +217,11 @@ critic.acidity的数据分布有问题, 在0处的值特别多, 另外还有两�
 去掉了序号列.因为没有用.
 
 # 双变量绘图
-```{r echo=FALSE, Bivariate_Plots}
-ggpairs(sample_n(wineQualityReds, 100))
+```{r echo=FALSE, fig.height=20, fig.width=20, message=FALSE, warning=FALSE}
+ggpairs(sample_n(wineQualityReds, 100))+
+  theme(
+      axis.ticks = element_blank(),
+      axis.text = element_blank())
 ```
 
 随机抽取100个样本对所有变量绘制相关图.
@@ -229,96 +231,96 @@ ggpairs(sample_n(wineQualityReds, 100))
 3. 相互相关的有(density, fixed.acidity), (citric.acid, fixed.acidity), (citric.acid, violate.acidity, tatal.sulfur.dioxide, free.sulfur.dioxide)
 
 ## 质量数据相关绘图
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(quality, citric.acid), data = wineQualityReds)+
   geom_boxplot()
 ```
 
 很明显, 对于品质来说, 柠檬酸越多, 品质的中位数明显增高, 但是柠檬酸是欧盟不允许添加柠檬酸来酸化, 这是为什么有的柠檬酸含量很低的原因, 只能是葡萄上面酵母自发发酵的产物.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(y=free.sulfur.dioxide, x=quality), data = wineQualityReds)+
   geom_boxplot()
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(as.numeric(quality), free.sulfur.dioxide))
 ```
 
 质量和游离二氧化硫含量没有太大关系
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(quality, total.sulfur.dioxide), data = wineQualityReds)+
   geom_boxplot()
 ```
 
 质量和二氧化硫没有关系.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(quality, density), data = wineQualityReds)+
   geom_boxplot()
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(as.numeric(quality), density))
 ```
 
 从图上看, 不同质量的红酒的密度中位数有逐渐降低的趋势, 但是不明显, 从相关系数也可以看出来, 相关性不明显, 但是从背景知识得知密度是和酒精相关的, 所以调查酒精和质量, 以及酒精和density的关系.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 # density and alcohol
 ggplot(aes(alcohol, density), data = wineQualityReds)+
   geom_point(position = position_jitter())+
   geom_smooth(method = "lm")
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(alcohol, density))
 ```
 
 果然可以看出酒精和密度是相关的, 下面验证酒精和品质的关系.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(quality, alcohol),
        data = wineQualityReds)+
   geom_boxplot()
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% 
   with(cor.test(alcohol, as.numeric(quality)))
 ```
 
 酒精和红酒质量的相关性达到0.47, 估计后面做多变量的时候加上其他因素可以得到更高的相关性.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(quality, pH),data = wineQualityReds)+
   geom_boxplot()
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(as.numeric(quality), pH))
 ```
 
 出人意料的是,pH值酸碱度竟然和品质关系不大.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(quality, sulphates),
        data = wineQualityReds)+
   geom_boxplot()
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(as.numeric(quality), sulphates))
 ```
 
 硫酸盐和之前的二氧化硫一样, 和质量的关系不大.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(quality, residual.sugar), data = wineQualityReds)+
   geom_boxplot()
 ```
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(as.numeric(quality), residual.sugar))
 ```
 
 糖类和质量的关系也不大, 和我假设的不一样.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 # density vs fixed.acid
 wineQualityReds %>% with(cor.test(density, fixed.acidity))
 qplot(density, fixed.acidity, data = wineQualityReds)+
@@ -328,38 +330,47 @@ qplot(density, fixed.acidity, data = wineQualityReds)+
 
 密度和石酸的相关性很高
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(citric.acid, fixed.acidity))
 qplot(citric.acid, fixed.acidity, data = wineQualityReds)+
   geom_smooth(method = "lm")
 ```
-```{r echo=FALSE}
+
+柠檬酸和不可挥发酸有线性相关性, 应该是这两者之间可以相互转换.
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(citric.acid, volatile.acidity))
 qplot(citric.acid, volatile.acidity, data = wineQualityReds)+
   geom_smooth(method = "lm")
 ```
-```{r echo=FALSE}
+
+柠檬酸和可挥发酸也有线性相关性.
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(pH, citric.acid))
 qplot(data = wineQualityReds, x = pH, y = citric.acid)+
   geom_smooth(method = "lm")
 ```
-```{r echo=FALSE}
+
+酸碱度和柠檬酸具有相关性.
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(total.sulfur.dioxide, free.sulfur.dioxide))
 qplot(data = wineQualityReds, x = total.sulfur.dioxide, y = free.sulfur.dioxide)+
   geom_smooth(method = "lm")
 ```
-```{r echo=FALSE}
+
+游离二氧化硫和总二氧化硫之间也有相关性.
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(pH, fixed.acidity))
 ```
 
-```{r echo=FALSE}
+pH值和不挥发酸呈现负相关性.
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(ratio.acid.alcohol, density))
 qplot(data = wineQualityReds, x = ratio.acid.alcohol, y=density)+
   geom_smooth(method = "lm")
 ```
 
 密度和 酸酒比例 相关性非常高.
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wineQualityReds %>% with(cor.test(ratio.acid.alcohol, pH))
 qplot(data = wineQualityReds, x = ratio.acid.alcohol, y = pH)+
   geom_smooth(method = "lm")
@@ -439,16 +450,21 @@ ggplot(data = wineQualityReds,
 前两个图可以看出来, 在图的左下角基本没有高质量的红酒.
 最后一个图展示了,柠檬酸和石酸的线性关系, 但是对于品质没有影响.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(data = wineQualityReds,
-       aes(density, alcohol, color=quality))+
+       aes(density, alcohol, color=factor(quality)))+
+  coord_cartesian(xlim = c(0.985, 1.005),
+                  ylim = c(5, 15))+
   geom_jitter()+
-  geom_smooth(method = "lm")+
-  facet_wrap(~quality)
+  scale_color_brewer(type="seq")+
+  theme_dark()+
+  labs(x = "Density (mg/l)",
+       y = "Alcohol (% by volume)",
+       title = "Realationship of density vs alcohol with colored quality levels")
 ```
 
 对于不同质量的红酒, 酒精和密度的相关性都非常强.
-```{r echo=FALSE}
+```{r echo=FALSE, fig.height=20, fig.width=20, message=FALSE, warning=FALSE}
 library(memisc)
 
 m1 <- lm(formula = quality ~ alcohol, data = wineQualityReds)
@@ -460,7 +476,7 @@ mtable(m1, m2, m3, m4)
 
 使用和品质相关的数据, 并且使用线性的模型并不能很好的预测价格.还是需要非线性的模型来做预测.
 
-```{r echo=FALSE}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 wine.by.alcohol <- 
   wineQualityReds %>% 
   group_by(alcohol) %>% 
@@ -477,6 +493,7 @@ qplot(data = wine.by.alcohol, x = alcohol, y = mean, color = n, size=n)+
 # 多变量分析
 
 ### 多变量分析发现的现象
+
 酒精和密度是一对相关的数据, 除此之外还有柠檬酸(citric.acid)和石酸(fixed.acidity).
 
 ### 多变量分析发现的问题
@@ -484,28 +501,35 @@ qplot(data = wine.by.alcohol, x = alcohol, y = mean, color = n, size=n)+
 酒精是最相关的一个变量, 除此之外别的组合以及单个变量的相关性都不能很好的体现和质量的关系.
 
 ### 线性模型的构建以及结论
+
 尝试用线性模型来做预测, 但是效果不好, 应该需要非线性模型.
-------
+
 
 # 最终绘图与总结
 
 ### 图1
-```{r echo=FALSE, Plot_One}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
 ggplot(aes(y=quality, x=alcohol),
        data = wineQualityReds)+
   geom_jitter(stat = "summary", fun.y = mean)+
-  geom_smooth(method = "lm")
+  geom_smooth(method = "lm")+
+  labs(x = "Alcohol (% by volume)",
+       y = "Quality (0~10)",
+       title = "Alcohol VS Quality in red wine")
 ```
 
 ### 解释
 上图可以看出来, 红酒的质量主要和酒精相关, 酒精含量越高, 质量相对就越高, 这和平常的经验也想符合, 一般高度酒像茅台,五粮液都是烈酒, 而超市的红酒一般便宜而且度数偏低.
 
 ### 图2
-```{r echo=FALSE, Plot_Two}
+```{r echo=FALSE,message=FALSE, warning=FALSE}
 ggplot(data = wineQualityReds,
        aes(density, fixed.acidity))+
   geom_jitter(stat = "summary", fun.y = mean)+
-  geom_smooth(method = "lm")
+  geom_smooth(method = "lm")+
+  labs(x = "Density in (mg/l)",
+       y = "Fixed acidity",
+       title = "Density vs Fixed acidity")
 ```
 
 ### 解释
@@ -517,7 +541,10 @@ wineQualityReds <- wineQualityReds %>% mutate(quality = as.numeric(quality))
 wineQualityReds$quality.cut <- cut(wineQualityReds$quality, breaks = c(0, 3, 6, 8))
 ggplot(data = wineQualityReds, 
        aes(alcohol, citric.acid, color=quality.cut))+
-  geom_point(position = position_jitter())
+  geom_point(position = position_jitter())+
+  labs(x = "Alcohol (% by volume)",
+       y = "Citric acid",
+       title = "Alcohol VS Citric Acid")
 ```
 
 
@@ -526,6 +553,11 @@ ggplot(data = wineQualityReds,
 判断柠檬酸, 酒精和红酒质量关系的时候, 大致可以看的出来, 质量低的红酒分布在左下角, 也就是酒精度数低,而且柠檬酸也低的地方, 查阅资料可以得出柠檬酸是用来修饰红酒的一种添加剂, 可以联想到, 修饰过的红酒自然有更好的口味.
 
 
-# 感谢
+# 反思
 分析的过程中一直在思考一个问题, 究竟是什么影响了红酒的质量, 或者说品酒师的口感.他是个单一变量, 还是多个变量共同的结果. 对于数据中的每一个变量我都查阅了网络的资料, 弄清楚他们的含义以及普遍大家对于红酒的认识. 通过网上的背景知识, 我预想影响红酒品质的应该是糖和酸, 但是从单变量分析开始, 我的预想就一直没能验证, 首先影响红酒品质的是酒精, 但是相关性又不是非常强, 这个时候对于双变量组合发现, 并没有哪个组合和红酒品质产生决定性的因素. 从相关性最强的几个变量入手做多变量分析, 结果也是没有明确的影响红酒的多变量组合.
-我猜想一个是数据量不足, 只有一千多个, 一个是线性模型的缺陷, 应该使用非线性的模型预测.
+
+## 未来的方向
+
+一个是数据量不足, 只有一千多个, 未来可以结合白酒数据继续分析, 增加数据量.
+
+一个是线性模型的缺陷, 应该使用非线性的模型预测, 例如机器学习模型.
