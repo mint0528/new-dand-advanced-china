@@ -2,6 +2,9 @@
 ## 初稿
 https://public.tableau.com/views/story_v1_12/sheet13?:embed=y&:display_count=yes
 
+## 第二稿
+https://public.tableau.com/views/story_v2_4/pclasssurvivedrate?:embed=y&:display_count=yes&publish=yes
+
 ## 终稿
 https://public.tableau.com/views/story_v1_11/sheet16?:embed=y&:display_count=yes&publish=yes
 
